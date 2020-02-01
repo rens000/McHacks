@@ -1,5 +1,8 @@
+
 list_of_objects = []
 pet_name = []
+
+
 
 def Intro():
     line_1 = " Once upon a time..."
@@ -33,7 +36,7 @@ def Door():
     print("The game is about to begin.")
     print("You have ten tries to guess the word")
     print("Go!")
-    word = "golden"
+    word = "GOLDEN"
     word_list = []
     guessed = []
     for char in word:
@@ -43,7 +46,8 @@ def Door():
     times = 0
     while guessed != word_list and times < 10:
         print(*guessed, sep=' ')
-        guess = input("enter a letter: ")
+        g = input("enter a letter: ")
+        guess = g.upper()
         if guess in word_list:
             print("correct")
             position = [i for i, x in enumerate(word_list) if x == guess]
@@ -58,6 +62,7 @@ def Door():
         elif guessed == word_list:
             print("you won! the word was GOLDEN")
             print("you were able to escape the giant! you may now continue on your way!")
+            list_of_objects.append("door")
         else:
             print("you have guessed incorrectly", times, "times")
      
@@ -75,13 +80,13 @@ def Hallway():
         list_of_objects.append("pet")
 
 def follow_noise():
-    print("Good job! By following the noise you have stumbled across the giant's golden goose!\nThe goose and the giant seem to be having an argument.")
-    if "key" in list_of_objects:
-        print("Because you chose to go outside and got the key...")
-    else:
-        print("Because you did not chose to first explore outside...")
-        print("RIDDLE")
-        print("to open the cage, you must complete this riddle")
+    print("Good job!  You have stumbled across the giant's golden goose!\nThe goose and the giant seem to be having an argument.")
+    if "key" in list_of_objects and "pet" not in list_of_objects:
+        print("The giant turns to you and smiles.  'You have found the key!  Solve this riddle to pass me.  If you do, you can open the cage, and keep the goose'.")
+    elif "pet" in list_of_objects and "key" not in list_of_objects:
+        print("The giant turns to you and smiles.  'You have returned my lost pet!  Solve this riddle to pass me.  If you do, you can open the cage, and keep the goose'.")
+    elif "pet" and "key" in list_of_objects:
+        print("The giant turns to you and smiles.  'You have found the key and returned to me my lost pet!  Solve this riddle to pass me.  If you do, you can open the cage, and keep the goose'.")
 
 def Ignore_Noise():
     print("You continue down the hallway and stumble across a door leading outside. You open the door.")
@@ -95,6 +100,21 @@ def Ignore_Noise():
     print("You head back inside.")
     if "pet" in list_of_objects: #pet follows
         print(pet_name[0], "follows, happily covered in grass stains.")
+    
+
+def Riddle():
+    print("Giant asks: What has six faces and twenty-one eyes, but cannot see?")
+    answer = input("Answer: ")
+    if answer == "dice" or "die":
+        print("Hmmm not what I was thinking, but I guess you are correct.")
+        print("Congratulations! You have proven yourself to be worthy of this Golden Goose.")
+        print("The giant sends you home.") 
+    elif answer == pet_name[0]:
+        print("'Exactly! Poor ", pet_name[0]," here lost his sight when he was just 46 years old.'")
+        print("Congratulations! You have proven yourself to be worthy of this Golden Goose.")
+        print("The giant sends you home.")
+    else:
+        print("'Sorry, you are wrong. I am afraid that you are undeserving of my golden goose.'")
         
 
 
@@ -111,17 +131,24 @@ def Story():
               Door()
         elif door_or_hallway == "B":
             Hallway()
-    print("As you continue on your way, you hear a noise down the West Wing.\nYou are met with another decision.")
-    print("Do you\nA: Follow the noise\nB: Ignore the noise.")
-    noise = input("enter A or B: ")
-    if noise == "A":
-        follow_noise()
-    elif noise == "B":
-        Ignore_Noise()
+    if "door" in list_of_objects:
+        print("As you continue on your way, you hear a noise down the West Wing.\nYou are met with another decision.")
+        print("Do you\nA: Follow the noise\nB: Ignore the noise.")
+        noise = input("enter A or B: ")
+        if noise == "A":
+            follow_noise()
+        elif noise == "B":
+            Ignore_Noise()
+            follow_noise()
+        if "key" or "pet" in list_of_objects:
+            Riddle()
+        else:
+            print("Unfortunately you have not acquired enough objects throughout your journey to recieve the golden goose.  The giant sends you home empty handed.")
+        
 
     
         
         
     
-
+Story()
     
